@@ -3,7 +3,7 @@ import List from "./components/list";
 import { v4 as uuidv4 } from "uuid";
 
 function App() {
-  const [lists, setlists] = useState([]);
+  const [lists, setlists] = useState([]); // Initialize with an empty array
   const [taskText, settaskText] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [ShowChecked, setShowChecked] = useState(false);
@@ -16,51 +16,37 @@ function App() {
   }
 
   useEffect(() => {
-    // setlists([
-    //   {
-    //     task: "task 1",
-    //     isCompleted: false,
-    //     id: "1",
-    //   },
-    //   {
-    //     task: "task 2",
-    //     isCompleted: false,
-    //     id: "2",
-    //   },
-    // ]);
-
     let data = JSON.parse(localStorage.getItem("todo-lists"));
-    setlists(data);
+    // Check if data exists and is an array
+    if (data && Array.isArray(data)) {
+      setlists(data);
+    } else {
+      setlists([]); // Default to an empty array if data is null or not an array
+    }
   }, []);
 
   useEffect(() => {
-    if (lists.length > 0) {
-      // console.log(lists);
+    if (lists && Array.isArray(lists) && lists.length > 0) {
+      // Save lists to localStorage if it's a valid array
       let strLists = JSON.stringify(lists);
-      // console.log(strLists);
       localStorage.setItem("todo-lists", strLists);
     }
 
-    // Set Height to scrollHeight of the lists
-    if (ShowChecked) {
-      setHeight(lists.length * 68 + 22 + "px");
-    } else {
-      setHeight(
-        lists.filter((item) => !item.isCompleted).length * 68 + 22 + "px"
-      );
-      console.log(lists.length * 68 + "px");
+    // Set Height based on the lists' length and ShowChecked state
+    if (lists && Array.isArray(lists)) {
+      if (ShowChecked) {
+        setHeight(lists.length * 68 + 22 + "px");
+      } else {
+        setHeight(
+          lists.filter((item) => !item.isCompleted).length * 68 + 22 + "px"
+        );
+      }
     }
-
-    // if (ShowChecked || lists.some(item => item.isCompleted)) {
-    //   setHeight(`${document.querySelector('.lists').scrollHeight}px`);
-    // } else {
-    //   setHeight("0px"); // Collapse if no tasks to show
-    // }
   }, [lists, ShowChecked]);
 
   function handleClick(e) {
     if (taskText.length > 0) {
-      if (selectedId == "") {
+      if (selectedId === "") {
         setlists([
           ...lists,
           { task: taskText, isCompleted: false, id: uuidv4() },
@@ -68,7 +54,6 @@ function App() {
       } else {
         let index = lists.findIndex((item) => selectedId === item.id);
         if (index !== -1) {
-          // console.log(index);
           let newLists = [...lists];
           newLists[index].task = taskText;
           setlists(newLists);
@@ -118,20 +103,10 @@ function App() {
             />
             <label htmlFor="chk">Show Finished?</label>
           </div>
-          {lists.map((item) => {
-            if (ShowChecked) {
-              return (
-                <List
-                  key={item.id}
-                  task={item}
-                  lists={lists}
-                  setlists={setlists}
-                  settaskText={settaskText}
-                  setSelectedId={setSelectedId}
-                />
-              );
-            } else {
-              if (!item.isCompleted) {
+          {/* Map through lists only if lists is a valid array */}
+          {Array.isArray(lists) &&
+            lists.map((item) => {
+              if (ShowChecked) {
                 return (
                   <List
                     key={item.id}
@@ -142,13 +117,24 @@ function App() {
                     setSelectedId={setSelectedId}
                   />
                 );
+              } else {
+                if (!item.isCompleted) {
+                  return (
+                    <List
+                      key={item.id}
+                      task={item}
+                      lists={lists}
+                      setlists={setlists}
+                      settaskText={settaskText}
+                      setSelectedId={setSelectedId}
+                    />
+                  );
+                }
               }
-            }
-          })}
+            })}
           {lists.length < 1 ? (
             <div className="text-lg">Nothing to Show</div>
-          ) : lists.filter((item) => !item.isCompleted).length < 1 &&
-            !ShowChecked ? (
+          ) : lists.filter((item) => !item.isCompleted).length < 1 && !ShowChecked ? (
             <div className="text-lg">Nothing to Show</div>
           ) : (
             ""
