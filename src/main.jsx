@@ -10,7 +10,7 @@ createRoot(document.getElementById("root")).render(
       <div className="absolute inset-0 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
 
       {/* App Component */}
-      <div className="relative z-10 m-10">
+      <div className="relative z-10 sm:m-10">
         <App />
       </div>
     </div>
