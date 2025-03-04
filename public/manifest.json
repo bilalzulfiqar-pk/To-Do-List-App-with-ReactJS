@@ -1,6 +1,6 @@
 {
     "name": "To-Do list App",
-    "short_name": "App",
+    "short_name": "TaskFlow",
     "description": "A simple and efficient to-do list app to organize your tasks and boost productivity",
     "start_url": "/",
     "display": "standalone",
