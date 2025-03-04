@@ -10,6 +10,10 @@ This is a simple To-Do List application built with React. It enables users to ma
 - **Persistent Storage**: Uses local storage to retain tasks across page reloads.
 - **Dynamic Height Adjustment**: Task list adjusts its height based on the number of tasks for a streamlined UI.
 
+## Live Demo
+
+Check out the live demo here: [Live Demo](https://to-do-list-app-ten-mu.vercel.app/)
+
 ## Technologies Used
 
 - React with Hooks (`useState`, `useEffect`)
