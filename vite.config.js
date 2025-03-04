@@ -11,8 +11,8 @@ export default defineConfig({
         enabled: true, // Enables PWA in development
       },
       manifest: {
-        name: "To-Do list App",
-        short_name: "App",
+        name: "TaskFlow",
+        short_name: "TaskFlow",
         description: "A simple and efficient to-do list app to organize your tasks and boost productivity",
         theme_color: "#ffffff",
         background_color: "#ffffff",
