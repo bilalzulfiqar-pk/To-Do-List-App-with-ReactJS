@@ -12,7 +12,4 @@ body {
   background-color: rgb(107, 107, 107);
   min-height: 100vh;
   font-family: "Poppins", serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

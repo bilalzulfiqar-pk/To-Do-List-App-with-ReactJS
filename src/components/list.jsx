@@ -9,8 +9,8 @@ const List = ({
   setlists,
   settaskText,
   setSelectedId,
+  inputRef,
 }) => {
-
   const [isChecked, setIsChecked] = useState(task.isCompleted);
   // console.log("Render "+isChecked)
 
@@ -55,6 +55,7 @@ const List = ({
       if (newLists.length < 1) {
         let strLists = JSON.stringify(newLists);
         localStorage.setItem("todo-lists", strLists);
+        // localStorage.removeItem("todo-lists");
       }
     }
   }
@@ -62,19 +63,22 @@ const List = ({
   function handleEdit(e) {
     settaskText(task.task);
     setSelectedId(task.id);
-    console.log(task.task, task.id);
+    // console.log(task.task, task.id);
+    // console.log(inputRef);
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }
 
   function handleCheckClick(e) {
     setIsChecked(!isChecked);
   }
 
-  function handleOnChnage(e) {
-    
-  }
+  function handleOnChnage(e) {}
 
   return (
-    <div className="list flex justify-between h-fit border-2 rounded-lg p-3">
+    <div className="list flex justify-between h-fit border-2 rounded-lg p-3 bg-white">
       <div className="left flex gap-4 items-center relative justify-center">
         <StyledWrapper>
           <label className="checkbox w-6">
