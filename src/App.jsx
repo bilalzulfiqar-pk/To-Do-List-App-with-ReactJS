@@ -87,7 +87,7 @@ function App() {
 
   return (
     <>
-      <div className="container p-7 sm:min-h-[500px] sm:w-[500px] lg:w-[50vw] sm:border-2 border-[#ff604f] min-h-screen w-screen rounded-xl flex flex-col gap-4 bg-white shadow-2xl transition-all overflow-hidden">
+      <div className="container p-7 sm:min-h-[500px] sm:w-[500px] lg:w-[50vw] sm:border-y-2 border-[#ff604f] min-h-screen w-screen rounded-xl flex flex-col gap-4 bg-white shadow-2xl transition-all overflow-hidden">
         <div className="title">
           <h1 className="font-semibold text-xl">To-Do List 📝</h1>
         </div>
