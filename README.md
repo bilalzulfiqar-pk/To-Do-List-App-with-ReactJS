@@ -1,7 +1,7 @@
 # To-Do List App
 
 This is a simple To-Do List application built with React. It enables users to manage tasks by adding, editing, and toggling their completion status, with tasks saved in local storage for persistence. It also supports **Progressive Web App (PWA)** functionality, allowing users to install the app on their devices for offline usage.  
-Now enhanced with **Framer Motion** for smooth animations.
+Enhanced with **Framer Motion** for smooth animations.
 
 ## Features
 
