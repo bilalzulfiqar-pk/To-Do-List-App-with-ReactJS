@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import List from "./components/list";
 import { v4 as uuidv4 } from "uuid";
+import { motion, AnimatePresence } from "framer-motion"; //  Framer Motion for animation
 
 function App() {
   const [lists, setlists] = useState([]); // Initialize with an empty array
@@ -10,9 +11,6 @@ function App() {
   const [buttonText, setButtonText] = useState("ADD");
 
   const inputRef = useRef(null);
-
-  // State for Height
-  const [Height, setHeight] = useState("0px");
 
   function handleChange(e) {
     settaskText(e.target.value);
@@ -28,26 +26,11 @@ function App() {
     }
   }, []);
 
-  // let temp = 0
-
   useEffect(() => {
     if (lists && Array.isArray(lists) && lists.length > 0) {
       // Save lists to localStorage if it's a valid array
       let strLists = JSON.stringify(lists);
-      // temp += 1;
-      // console.log("Testing", temp , lists);
       localStorage.setItem("todo-lists", strLists);
-    }
-
-    // Set Height based on the lists' length and ShowChecked state
-    if (lists && Array.isArray(lists)) {
-      if (ShowChecked) {
-        setHeight(lists.length * 68 + 22 + "px");
-      } else {
-        setHeight(
-          lists.filter((item) => !item.isCompleted).length * 68 + 22 + "px"
-        );
-      }
     }
   }, [lists, ShowChecked]);
 
@@ -114,11 +97,16 @@ function App() {
             {buttonText}
           </button>
         </div>
-        <div
-          className="lists px-5 flex flex-col gap-3 transition-all duration-[250ms]"
-          style={{ height: Height }}
+        {/* ✅ Framer Motion Animated List Container */}
+        <motion.div
+          className="lists px-5 flex flex-col gap-3 overflow-hidden"
+          // initial={{ height: 300 }}
+          animate={{ height: "auto" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          layout
+          layoutRoot
         >
-          <div className=" flex gap-3 items-center">
+          <div className="flex gap-3 items-center">
             <input
               type="checkbox"
               name="chk"
@@ -128,37 +116,33 @@ function App() {
             />
             <label htmlFor="chk">Show Finished?</label>
           </div>
-          {/* Map through lists only if lists is a valid array */}
-          {Array.isArray(lists) &&
-            lists.map((item) => {
-              if (ShowChecked) {
-                return (
-                  <List
-                    key={item.id}
-                    task={item}
-                    lists={lists}
-                    setlists={setlists}
-                    settaskText={settaskText}
-                    setSelectedId={setSelectedId}
-                    inputRef={inputRef}
-                  />
-                );
-              } else {
-                if (!item.isCompleted) {
+          {/* ✅ Animated List Items */}
+          <AnimatePresence>
+            {Array.isArray(lists) &&
+              lists.map((item) => {
+                if (ShowChecked || !item.isCompleted) {
                   return (
-                    <List
+                    <motion.div
                       key={item.id}
-                      task={item}
-                      lists={lists}
-                      setlists={setlists}
-                      settaskText={settaskText}
-                      setSelectedId={setSelectedId}
-                      inputRef={inputRef}
-                    />
+                      initial={{ opacity: 0, height: 0, }} // ✅ Start hidden
+                      animate={{ opacity: 1, height: "auto" }} // ✅ Expand smoothly
+                      exit={{ opacity: 0, height: 0 }} // ✅ Collapse on removal
+                      layout
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                    >
+                      <List
+                        task={item}
+                        lists={lists}
+                        setlists={setlists}
+                        settaskText={settaskText}
+                        setSelectedId={setSelectedId}
+                        inputRef={inputRef}
+                      />
+                    </motion.div>
                   );
                 }
-              }
-            })}
+              })}
+          </AnimatePresence>
           {lists.length < 1 ? (
             <div className="text-lg">Nothing to Show</div>
           ) : lists.filter((item) => !item.isCompleted).length < 1 &&
@@ -167,7 +151,7 @@ function App() {
           ) : (
             ""
           )}
-        </div>
+        </motion.div>
       </div>
     </>
   );
